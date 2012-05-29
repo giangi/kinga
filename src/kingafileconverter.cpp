@@ -61,18 +61,16 @@ void KingaFileConverter::Run(void)
             emit FileConverted(fileinfo.fileName());
             if( progress_dialog->wasCanceled() ) break;
         } catch( Error& magick_error ) {
-            QMessageBox message_box;
-            message_box.setIcon(QMessageBox::Critical);
-            message_box.setText(magick_error.what());
-            message_box.exec();
+            QMessageBox::critical(this,tr("Error"),magick_error.what(),QMessageBox::Ok,QMessageBox::Ok);
             break;
         }
     }
     emit FileConverted(FileList.size()-1);
-    QMessageBox message_box;
-    message_box.setIcon(QMessageBox::Information);
-    message_box.setText(tr("Conversion successful!"));
-    message_box.exec();
+    if(progress_dialog->wasCanceled()) {
+        QMessageBox::warning(this,tr("Kinga"),tr("Conversion canceled"),QMessageBox::Ok,QMessageBox::Ok);
+    } else {
+        QMessageBox::information(this,tr("Kinga"),tr("Conversion successful"),QMessageBox::Ok,QMessageBox::Ok);
+    }
 }
 
 #endif

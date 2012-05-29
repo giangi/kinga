@@ -93,7 +93,7 @@ KingaMain::KingaMain(QWidget* parent) : QWidget(parent)
 }
 
 void KingaMain::OnAboutClicked(void) {
-    QMessageBox::about(this,tr("About Kinga"),tr("Kinga is just a small gui to batch-convert images for reading on various E-Reader models.\nCopyright (C) 2012 Gianluca Merlo, released under the GNU GPLv3 (see LICENSE file)"));
+    QMessageBox::about(this,tr("About Kinga"),tr("Kinga is just a small gui to batch-convert images for reading on various E-Reader models.\n\nCopyright (C) 2012 Gianluca Merlo, released under the GNU GPLv3 (see LICENSE file)"));
 }
 
 void KingaMain::OnBrowseOutputClicked(void)
@@ -108,10 +108,7 @@ void KingaMain::RunClicked(void)
     unsigned int width,height,density_x,density_y,colors;
     switch(preset_number) {
         case KINGA_PRESET_UNDEFINED: {
-            QMessageBox message_box;
-            message_box.setIcon(QMessageBox::Critical);
-            message_box.setText(tr("Select a preset first"));
-            message_box.exec();
+            QMessageBox::critical(this,tr("Error"),tr("Please select a preset first"),QMessageBox::Ok,QMessageBox::Ok);
             return;
             break;
         }
@@ -151,19 +148,20 @@ void KingaMain::RunClicked(void)
             colors = 16;
             break;
         default: {
-            QMessageBox message_box;
-            message_box.setIcon(QMessageBox::Critical);
-            message_box.setText(tr("Preset selection error"));
-            message_box.exec();
+            QMessageBox::critical(this,tr("Error"),tr("Preset selection error"),QMessageBox::Ok,QMessageBox::Ok);
             return;
             break;
         }
     }
     QStringList filelist = FileManager->GetFiles();
-    QDir::setCurrent(OutputPathEditor->text());
-    KingaFileConverter* file_converter = new KingaFileConverter(filelist,width,height,density_x,density_y,colors,this);
-    file_converter->Run();
-    QDir::setCurrent(QDir::homePath());
+    if(filelist.size() > 0) {
+        QDir::setCurrent(OutputPathEditor->text());
+        KingaFileConverter* file_converter = new KingaFileConverter(filelist,width,height,density_x,density_y,colors,this);
+        file_converter->Run();
+        QDir::setCurrent(QDir::homePath());
+    } else {
+        QMessageBox::critical(this,tr("Error"),tr("No files to convert"),QMessageBox::Ok,QMessageBox::Ok);
+    }
 }
 
 #endif

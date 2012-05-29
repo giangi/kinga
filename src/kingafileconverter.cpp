@@ -24,7 +24,7 @@
 
 KingaFileConverter::KingaFileConverter(QStringList filelist,
     unsigned int width, unsigned int height, unsigned int density_x,
-    unsigned int density_y, unsigned int colors, QObject* parent) : QObject(parent)
+    unsigned int density_y, unsigned int colors, QWidget* parent) : QWidget(parent)
 {
     Canceled = false;
     FileList = filelist;

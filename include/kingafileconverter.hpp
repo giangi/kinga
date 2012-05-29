@@ -33,14 +33,14 @@
 
 using namespace Magick;
 
-class KingaFileConverter : public QObject
+class KingaFileConverter : public QWidget
 {
     Q_OBJECT
 
 public:
     KingaFileConverter(QStringList filelist, unsigned int width,
         unsigned int height, unsigned int density_x, unsigned int density_y,
-        unsigned int colors, QObject* parent = 0);
+        unsigned int colors, QWidget* parent = 0);
     void Run(void);
 
 signals:

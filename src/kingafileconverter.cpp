@@ -38,6 +38,7 @@ void KingaFileConverter::Run(void)
 {
     QProgressDialog* progress_dialog = new QProgressDialog(tr("Converting files..."),tr("Cancel"),0,FileList.size()-1);
     progress_dialog->setWindowTitle(tr("Converting..."));
+    progress_dialog->setWindowModality(Qt::WindowModal);
     connect(this,SIGNAL(FileConverted(int)),progress_dialog,SLOT(setValue(int)));
     connect(this,SIGNAL(FileConverted(QString)),progress_dialog,SLOT(setLabelText(QString)));
     for(int i=0;i<FileList.size();i++){

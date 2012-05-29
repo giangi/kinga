@@ -47,12 +47,8 @@ signals:
     void FileConverted(int index);
     void FileConverted(QString filename);
 
-private slots:
-    void OnCancel(void);
-
 private:
     QStringList FileList;
-    bool Canceled;
     unsigned int Width;
     unsigned int Height;
     unsigned int DensityX;

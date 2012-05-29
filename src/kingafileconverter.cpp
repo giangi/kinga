@@ -26,7 +26,6 @@ KingaFileConverter::KingaFileConverter(QStringList filelist,
     unsigned int width, unsigned int height, unsigned int density_x,
     unsigned int density_y, unsigned int colors, QWidget* parent) : QWidget(parent)
 {
-    Canceled = false;
     FileList = filelist;
     Width = width;
     Height = height;
@@ -35,18 +34,12 @@ KingaFileConverter::KingaFileConverter(QStringList filelist,
     Colors = colors;
 }
 
-void KingaFileConverter::OnCancel(void)
-{
-    Canceled = true;
-}
-
 void KingaFileConverter::Run(void)
 {
     QProgressDialog* progress_dialog = new QProgressDialog(tr("Converting files..."),tr("Cancel"),0,FileList.size()-1);
     progress_dialog->setWindowTitle(tr("Converting..."));
     connect(this,SIGNAL(FileConverted(int)),progress_dialog,SLOT(setValue(int)));
     connect(this,SIGNAL(FileConverted(QString)),progress_dialog,SLOT(setLabelText(QString)));
-    connect(progress_dialog,SIGNAL(canceled()),this,SLOT(OnCancel()));
     for(int i=0;i<FileList.size();i++){
         try {
             Image image;
@@ -65,7 +58,7 @@ void KingaFileConverter::Run(void)
             emit FileConverted(i);
             QFileInfo fileinfo(FileList.at(i));
             emit FileConverted(fileinfo.fileName());
-            if( Canceled ) break;
+            if( progress_dialog->wasCanceled() ) break;
         } catch( Error& magick_error ) {
             QMessageBox message_box;
             message_box.setIcon(QMessageBox::Critical);

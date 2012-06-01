@@ -26,6 +26,15 @@ KingaFileManager::KingaFileManager(QWidget* parent) : QWidget(parent)
 {
     // Main file manager
     QListWidget* file_list_widget = new QListWidget(this);
+    // Change selection style for the list of files
+    file_list_widget->setSelectionMode(QAbstractItemView::ContiguousSelection);
+    // Enable drag and drop
+    file_list_widget->setDragEnabled(true);
+    file_list_widget->setDragDropMode(QAbstractItemView::InternalMove);
+    file_list_widget->viewport()->setAcceptDrops(true);
+    file_list_widget->setDropIndicatorShown(true);
+    // Automatically scroll on drag
+    file_list_widget->setAutoScroll(true);
     // Container for file actions, and buttons
     QWidget* box_file_buttons = new QWidget(this);
     QPushButton* button_add_files = new QPushButton(tr("Add Files"),this);
@@ -48,9 +57,6 @@ KingaFileManager::KingaFileManager(QWidget* parent) : QWidget(parent)
     layout_file_area->addWidget(file_list_widget);
     layout_file_area->addWidget(box_file_buttons);
     setLayout(layout_file_area);
-
-    // Change selection style for the list of files
-    file_list_widget->setSelectionMode(QAbstractItemView::ContiguousSelection);
 
     // Assign create objects to private attributes
     FileListWidget = file_list_widget;
